@@ -1,0 +1,12 @@
+{% regroup deliverables|dictsort:"type" by type_label as deliverable_list %}
+
+{% for type in deliverable_list %}
+	<tr><th>{{ type.grouper}}</th>
+	{% for item in type.list %}
+		{% if not forloop.first %}
+			<tr><td></td>
+		{% endif %}
+		<td><a href="/deliverable/{{ item.uri|urlencode }}">{{ item.label }}</a>
+		</td></tr>
+	{% endfor %}
+{% endfor %}

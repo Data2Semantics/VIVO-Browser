@@ -20,7 +20,8 @@ class Projects(object):
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
         PREFIX commitv: <http://commit.data2semantics.org/ontology/>
         PREFIX dcterms: <http://purl.org/dc/terms/>
-        PREFIX bibo:<http://purl.org/ontology/bibo/>
+        PREFIX bibo: <http://purl.org/ontology/bibo/>
+        PREFIX skco: <http://www.w3.org/2004/02/skos/core#>
 
     """        
         
@@ -114,12 +115,23 @@ class Projects(object):
         } ORDER BY ASC(?l) 
     """
     
-    list_deliverables_query = namespaces + """
+    list_deliverables_by_type_query = namespaces + """
 
     SELECT DISTINCT ?p ?l ?pn WHERE {
         ?p a <DELIVERABLE_TYPE_URI> .
         ?p dcterms:title ?l 
     } ORDER BY ASC(?p) 
+
+    """
+    
+    list_deliverables_by_project_query = namespaces + """
+
+    SELECT DISTINCT ?deliverable ?title ?type ?type_label WHERE {
+        ?deliverable dcterms:creator <PROJECT_URI> .
+        ?deliverable dcterms:title ?title .
+        ?deliverable rdf:type ?type .
+        ?type skco:prefLabel ?type_label
+    } ORDER BY ASC(?deliverable) 
 
     """
     
@@ -300,9 +312,9 @@ class Projects(object):
         return uri_label
     
         
-    def listDeliverables(self, type):
+    def listDeliverablesByType(self, type):
 
-        q=self.list_deliverables_query.replace("DELIVERABLE_TYPE_URI",type)
+        q=self.list_deliverables_by_type_query.replace("DELIVERABLE_TYPE_URI",type)
         self.sparql.setQuery(q)
         
         results = self.sparql.query().convert()
@@ -318,6 +330,29 @@ class Projects(object):
         deliverables["types"]  = self.getTypes;
 		
         return deliverables
+        
+        
+    def listDeliverablesByProject(self, projectURI):
+
+        q=self.list_deliverables_by_project_query.replace("PROJECT_URI",projectURI)
+        self.sparql.setQuery(q)
+        
+        results = self.sparql.query().convert()
+        
+        deliverables=[]
+		
+        print q
+        print results
+        for result in results["results"]["bindings"]:
+            deliverable = {"uri": result["deliverable"]["value"], 
+                                 "label": result["title"]["value"], 
+                                 "deliverable": result["title"]["value"] ,
+                                 "type" : result["type"]["value"],   "type_label" : result["type_label"]["value"]
+    
+                                 }
+            deliverables.append(deliverable)
+		
+        return deliverables    
 
     def deliverableDetails(self, deliverableURI):
         q = self.deliverable_details_query.replace("CONTEXTURI",deliverableURI)

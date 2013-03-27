@@ -8,11 +8,19 @@ import views
 urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'views.index', name='index'),
+
     url(r'^projects$', 'views.projects', name='projects'),
     url(r'^groups$', 'views.groups', name='groups'),
     url(r'^persons$', 'views.persons', name='persons'),
+    
+    url(r'^deliverables$', 'views.deliverables', name='deliverables'),
+    url(r'^deliverables/(?P<URI>http.+)$', 'views.deliverables_type', name='deliverables_type'),
+    
+    url(r'^deliverable/(?P<URI>http.+)$', 'views.deliverable', name='deliverable'),
+	
     url(r'^group/(?P<URI>http.+)$', 'views.group', name='group'),
     url(r'^person/(?P<URI>http.+)$', 'views.person', name='person'),
+	
     # url(r'^vivolite/', include('vivolite.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
