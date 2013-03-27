@@ -19,6 +19,9 @@ class Projects(object):
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX foaf: <http://xmlns.com/foaf/0.1/>
         PREFIX commitv: <http://commit.data2semantics.org/ontology/>
+        PREFIX dcterms: <http://purl.org/dc/terms/>
+        PREFIX bibo:<http://purl.org/ontology/bibo/>
+
     """        
         
         
@@ -30,6 +33,7 @@ class Projects(object):
         } ORDER BY ASC(?pn) 
     """
     
+   
     list_groups_query = namespaces + """
         SELECT DISTINCT ?g ?l WHERE {
             { ?g a foaf:Organization } 
@@ -109,7 +113,28 @@ class Projects(object):
           }
         } ORDER BY ASC(?l) 
     """
+    
+    list_deliverables_query = namespaces + """
 
+    SELECT DISTINCT ?p ?l ?pn WHERE {
+        ?p a <DELIVERABLE_TYPE_URI> .
+        ?p dcterms:title ?l 
+    } ORDER BY ASC(?p) 
+
+    """
+    
+    deliverable_details_query = namespaces + """
+        SELECT DISTINCT  ?title ?creator ?comment ?abstract  ?issued ?due ?delivered ?dateIssued WHERE {
+                <CONTEXTURI> dcterms:title ?title .
+                <CONTEXTURI> dcterms:creator ?creator .
+				OPTIONAL { <CONTEXTURI> dcterms:issued ?issued . }
+				OPTIONAL { <CONTEXTURI> commitv:delivered ?delivered . }
+				OPTIONAL { <CONTEXTURI> commitv:due	?due . }
+				OPTIONAL { <CONTEXTURI> vivo:dateIssued	?dateIssued . }
+			    OPTIONAL { <CONTEXTURI> bibo:abstract ?abstract . }
+                OPTIONAL { <CONTEXTURI> commitv:project_leader_comment ?comment}
+        } 
+    """
     def __init__(self, endpoint):
         '''
         Constructor
@@ -119,6 +144,7 @@ class Projects(object):
         self.sparql.setReturnFormat(JSON)
         
     def listProjects(self):
+              
         self.sparql.setQuery(self.list_projects_query)
         
         results = self.sparql.query().convert()
@@ -130,6 +156,9 @@ class Projects(object):
             projectList.append(project)
             
         return projectList
+
+
+
     
     def listGroups(self):
         self.sparql.setQuery(self.list_groups_query)
@@ -140,7 +169,6 @@ class Projects(object):
         
         for result in results["results"]["bindings"]:
             group = {"uri": result["g"]["value"], "label": result["l"]["value"] }
-            print group
             groupList.append(group)
             
         return groupList
@@ -166,7 +194,9 @@ class Projects(object):
             
             personsList.append(person)
             
-        return personsList      
+        return personsList
+
+      
     
     def listAllPersons(self):
         q = self.list_all_persons_query
@@ -187,6 +217,7 @@ class Projects(object):
     def personDetails(self, personURI):
         q = self.person_details_query.replace("CONTEXTURI",personURI)
         self.sparql.setQuery(q)
+
         
         results = self.sparql.query().convert()
         
@@ -194,7 +225,7 @@ class Projects(object):
         # ?l ?fn ?p ?o ?wp ?rt ?rl
         
         name = ""
-        
+ 
         for result in results["results"]["bindings"]:
             detail = {"uri": personURI, "label": result["l"]["value"], "role": result["rt"]["value"], "roleLabel": result["rl"]["value"]}
             
@@ -227,10 +258,9 @@ class Projects(object):
         else :
             name = full
             
-        print name
         image = self.getImage(name)
         details = {'image': image, 'details': detailsList }
-            
+        
         return details
     
     def groupDetails(self, groupURI):
@@ -259,7 +289,58 @@ class Projects(object):
             detailsList.append(detail)
             
         return detailsList, parts, partOf
-          
+		
+	#not sure what's the proper query to get these list of deliverable types, so for now we use this	 
+    def getTypes(self):
+ 
+        deliverable_types =  [  "Journal", "Presentation",  "Other Result",  "User Study", "Synergy", "International Embedding", "Software","Dissemination"] #"Impact and Valorization", "Product" these two are empty
+    
+        uri_label =  [ {"uri" : "http://commit.data2semantics.org/ontology/type/"+x.lower().replace(" ","-"),  "label" : x}  for x in deliverable_types]
+    
+        return uri_label
+    
+        
+    def listDeliverables(self, type):
+
+        q=self.list_deliverables_query.replace("DELIVERABLE_TYPE_URI",type)
+        self.sparql.setQuery(q)
+        
+        results = self.sparql.query().convert()
+
+        deliverables = {}
+        deliverables["list"] = []
+		
+        for result in results["results"]["bindings"]:
+            deliverable = {"uri": result["p"]["value"], "label": result["l"]["value"], "deliverable": result["l"]["value"] }
+            deliverables["list"].append(deliverable)
+		
+		# Maybe there is a better way to obtain these hard coded values from real sparql query
+        deliverables["types"]  = self.getTypes;
+		
+        return deliverables
+
+    def deliverableDetails(self, deliverableURI):
+        q = self.deliverable_details_query.replace("CONTEXTURI",deliverableURI)
+        self.sparql.setQuery(q)
+        results = self.sparql.query().convert()
+        deliverable = {}
+        #only querying detail, get only one.
+        for result in results["results"]["bindings"]:
+            deliverable["title"] = result["title"]["value"]
+            
+            deliverable["creator"] = result["creator"]["value"]
+            
+            #Remove this temporary fix once we agree on using project/p20 or project/20 for creator
+            deliverable["creator"] = deliverable["creator"].replace("project/p","project/")
+            
+            optionals = ["abstract", "comment", "issued","due","delivered","dateIssued"]
+			
+            for option in optionals :
+                if option in result:
+                    deliverable[option] = result[option]["value"]
+					
+        return deliverable
+        
     def getImage(self, q):
         APIKEY = "AIzaSyBTdZniWL-51geqo9kfGg1YxjtIfgVdkIs"
         param = {'q':q,
@@ -273,6 +354,5 @@ class Projects(object):
         r = requests.get("https://www.googleapis.com/customsearch/v1", params=param)
         
         response = json.loads(r.text)
-        
         return response['items'][0]['link']
         
