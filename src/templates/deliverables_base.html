@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+
+	<div class="row">
+
+		<div class="span3 bs-docs-sidebar affix">
+			<ul class="nav nav-list bs-docs-sidenav">
+				<li class>
+					{% for type in types %}
+					<a href="/deliverables/{{type.uri|urlencode}}" ><i class="icon-chevron-right"></i>{{type.label}}</a>
+					{% endfor %}
+				</li>
+			</ul>
+		</div>
+		
+
+		{% block deliverable_type %}
+		{% endblock %}
+
+
+	</div>
+
+	<!-- Pagination not yet working 
+	<script>
+        // init bootpag
+        $('#page-selection').bootpag({
+            total: 10
+        }).on("page", function(event, /* page number here */ num){
+             $("#paginated").html("Insert content" + num); // some ajax content loading...
+        });
+    </script>
+	-->
+
+{% endblock %}

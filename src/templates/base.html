@@ -3,8 +3,11 @@
 <head>
 	<link rel="stylesheet" href="/static/css/commit.css" />
     <link rel="stylesheet" href="/static/css/bootstrap.css" />
+	<link rel="stylesheet" href="/static/css/docs.css" />
+	
     <title>{% block title %}COMMIT VIVO Browser{% endblock %}</title>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="/static/js/jquery.bootpag.js"></script>
 </head>
 
 <body>
@@ -17,13 +20,14 @@
     		</div>
     	</div>
     	<div class='row'>
-	    	<div class="navbar">
+	    	<div class="navbar navbar-fixed">
 			  <div class="navbar-inner">
 			    <a class="brand" href="/">Pages</a>
 			    <ul class="nav">
 			      <li><a href="/projects">All Projects</a></li>
 			      <li><a href="/groups">All Organizations</a></li>
 			      <li><a href="/persons">All Persons</a></li>
+			      <li><a href="/deliverables">All Deliverables</a></li>
 			    </ul>
 			  </div>
 			</div>
@@ -38,6 +42,7 @@
         </div>
     </div>
 	<script src="/static/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

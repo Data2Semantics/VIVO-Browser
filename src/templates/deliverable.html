@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<p class='lead' style='text-align: center'> {% if deliverable.title %}{{ deliverable.title  }}{% endif %}</p>
+
+<table class="table table-striped" style='table-layout:fixed'>
+<col class="property" width="200px"/><col class="value"/>
+
+	{% if deliverable.creator %}
+     <tr> 
+	        <th> Creator </th> 
+			<td> <a href="/group/{{deliverable.creator|urlencode}}"> {{ deliverable.creator  }} </a> </td> 
+	 </tr>
+	{% endif %}
+	
+	{% if deliverable.abstract %}
+     <tr> 
+	        <th> Abstract </th> 
+			<td> {{ deliverable.abstract}}  </td> 
+	 </tr>
+	{% endif %}
+	
+	{% if deliverable.comment %}
+     <tr> 
+	        <th> Comment </th> 
+			<td> {{ deliverable.comment  }}  </td> 
+	 </tr>
+	{% endif %}
+	
+		
+	{% if deliverable.due %}
+     <tr> 
+	        <th> Due </th> 
+			<td> {{ deliverable.due  }}  </td> 
+	 </tr>
+	{% endif %}
+	
+		
+	{% if deliverable.delivered%}
+     <tr> 
+	        <th> Delivered </th> 
+			<td> {{ deliverable.delivered  }}  </td> 
+	 </tr>
+	{% endif %}
+	
+		
+	{% if deliverable.issued %}
+     <tr> 
+	        <th> Issued </th> 
+			<td> {{ deliverable.issued  }}  </td> 
+	 </tr>
+	{% endif %}
+	
+		
+	{% if deliverable.dateIssued%}
+     <tr> 
+	        <th> Issued Quarter </th> 
+			<td> {{ deliverable.dateIssued  }}  </td> 
+	 </tr>
+	{% endif %}
+</table>
+
+{% endblock %}

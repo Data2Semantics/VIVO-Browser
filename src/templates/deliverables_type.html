@@ -1,0 +1,13 @@
+{% extends "deliverables_base.html" %}
+	
+{% block deliverable_type %}
+
+	<div class="span6 offset4">
+				<div id="page-selection" >  </div>
+							
+							{% for d in deliverables %}
+								<div class="well"><h5><a href="/deliverable/{{d.uri|urlencode }}">{{ d.label }}</a></h5></div>
+							{% endfor %}
+				</div>
+			
+{% endblock %}
