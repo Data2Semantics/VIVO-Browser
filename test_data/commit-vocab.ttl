@@ -1,0 +1,288 @@
+@prefix : <http://commit.data2semantics.org/vocab#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix commit: <http://commit.data2semantics.org/individual/> .
+@prefix commitv: <http://commit.data2semantics.org/ontology/> .
+@base <http://commit.data2semantics.org/ontology> .
+
+<http://commit.data2semantics.org/ontology> rdf:type owl:Ontology ;
+                                            
+                                            owl:imports <http://vivoweb.org/ontology/core> .
+
+
+#################################################################
+#
+#    Annotation properties
+#
+#################################################################
+
+
+
+
+#################################################################
+#
+#    Datatypes
+#
+#################################################################
+
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://commit.data2semantics.org/ontology/hasGender
+
+commitv:hasGender rdf:type owl:ObjectProperty .
+
+
+
+###  http://commit.data2semantics.org/ontology/hasTitle
+
+commitv:hasTitle rdf:type owl:ObjectProperty .
+
+
+
+###  http://commit.data2semantics.org/ontology/hasWorkPackage
+
+commitv:hasWorkPackage rdf:type owl:ObjectProperty ;
+                       
+                       rdfs:label "hasWorkPackage"@en ;
+                       
+                       owl:inverseOf commitv:workPackageOf ;
+                       
+                       rdfs:subPropertyOf <http://vivoweb.org/ontology/core#hasPart> .
+
+
+
+###  http://commit.data2semantics.org/ontology/roleConstrainedTo
+
+commitv:roleConstrainedTo rdf:type owl:ObjectProperty ;
+                          
+                          rdfs:subPropertyOf <http://vivoweb.org/ontology/core#roleIn> .
+
+
+
+###  http://commit.data2semantics.org/ontology/workPackageOf
+
+commitv:workPackageOf rdf:type owl:ObjectProperty ;
+                      
+                      rdfs:label "workPackageOf"@en ;
+                      
+                      rdfs:subPropertyOf <http://vivoweb.org/ontology/core#partOf> .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://commit.data2semantics.org/ontology/hasInitials
+
+commitv:hasInitials rdf:type owl:DatatypeProperty .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://commit.data2semantics.org/ontology/Function
+
+commitv:Function rdf:type owl:Class ;
+                 
+                 rdfs:subClassOf <http://vivoweb.org/ontology/core#Role> .
+
+
+
+###  http://commit.data2semantics.org/ontology/Project
+
+commitv:Project rdf:type owl:Class ;
+                
+                rdfs:label "Project"@en ;
+                
+                rdfs:subClassOf <http://vivoweb.org/ontology/core#Project> .
+
+
+
+###  http://commit.data2semantics.org/ontology/WorkPackage
+
+commitv:WorkPackage rdf:type owl:Class ;
+                    
+                    rdfs:subClassOf <http://vivoweb.org/ontology/core#Project> .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  http://commit.data2semantics.org/resource/project/01
+
+<http://commit.data2semantics.org/resource/project/01> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/01"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/02
+
+<http://commit.data2semantics.org/resource/project/02> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/02"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/04
+
+<http://commit.data2semantics.org/resource/project/04> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/04"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/06
+
+<http://commit.data2semantics.org/resource/project/06> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/06"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/07
+
+<http://commit.data2semantics.org/resource/project/07> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/07"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/08
+
+<http://commit.data2semantics.org/resource/project/08> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/08"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/09
+
+<http://commit.data2semantics.org/resource/project/09> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/09"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/10
+
+<http://commit.data2semantics.org/resource/project/10> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/10"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/11
+
+<http://commit.data2semantics.org/resource/project/11> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/11"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/12
+
+<http://commit.data2semantics.org/resource/project/12> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/12"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/15
+
+<http://commit.data2semantics.org/resource/project/15> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/15"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/19
+
+<http://commit.data2semantics.org/resource/project/19> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/19"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/20
+
+<http://commit.data2semantics.org/resource/project/20> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/20"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/23
+
+<http://commit.data2semantics.org/resource/project/23> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/23"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/24
+
+<http://commit.data2semantics.org/resource/project/24> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/24"@en .
+
+
+
+###  http://commit.data2semantics.org/resource/project/26
+
+<http://commit.data2semantics.org/resource/project/26> rdf:type commitv:Project ,
+                                                                owl:NamedIndividual ;
+                                                       
+                                                       rdfs:label "project/26"@en .
+
+
+
+
+###  Generated by the OWL API (version 3.3.1957) http://owlapi.sourceforge.net
+

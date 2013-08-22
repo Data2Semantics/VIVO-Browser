@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+{% regroup person.details|dictsort:"roleLabel" by roleLabel as detail_list %}
+
+{% with person.details|first as bio %}
+
+<p class='lead' style='text-align: center'>{{ bio.label }} {% if bio.firstname %}({{ bio.firstname }}){% endif %}</p>
+<p style='text-align: center'><img src='{{ person.image }}' style='height: 150px'/></p>
+<table class="table table-striped" style='table-layout:fixed'>
+	<col class="property" width="200px"/><col class="value"/>
+	{% if bio.email %}
+	<tr>
+		<th>email</th><td><a href="mailto:{{ bio.email }}">{{bio.email}}</a></td>
+	</tr>
+	{% endif %}
+	{% if bio.homepage %}
+	<tr>
+		<th>www</th><td><a href="{{ bio.homepage }}">{{bio.homepage}}</a></td>
+	</tr>
+	{% endif %}
+	
+
+	{% for detail in detail_list %}
+		{% for item in detail.list %}
+		<tr>
+			{% if forloop.first %}
+				<th>{{ detail.grouper|slice:":-4" }}</th>
+			{% else %}
+				<td></td>
+			{% endif %}
+			<td><a href="/group/{{ item.group|urlencode }}">{{ item.groupLabel }}</a>
+			</td>
+		</tr>
+		{% endfor %}
+	{% endfor %}
+</table>
+
+
+{% endwith %}
+{% endblock %}

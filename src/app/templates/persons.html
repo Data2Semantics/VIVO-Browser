@@ -1,0 +1,15 @@
+{% regroup persons|dictsort:"roleLabel" by roleLabel as person_list %}
+
+{% for role in person_list %}
+	<tr><th>{{ role.grouper|slice:":-4" }}</th>
+	{% for item in role.list %}
+		{% if not forloop.first %}
+			<tr><td></td>
+		{% endif %}
+		<td><a href="/person/{{ item.uri|urlencode }}">{{ item.label }}</a>
+		{% if item.wp %}
+			(<a href="/group/{{ item.wp|urlencode }}">{{ item.wpLabel }}</a>)
+		{% endif %}
+		</td></tr>
+	{% endfor %}
+{% endfor %}
