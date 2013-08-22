@@ -6,7 +6,7 @@
 
 
 
-{% with group|first as bio %}
+{% set bio = group|first %}
 
 
 
@@ -15,8 +15,8 @@
 <table class="table table-striped" style='table-layout:fixed'>
 <col class="property" width="200px"/><col class="value"/>
 {% if parts|length > 0 %}
-	{% for uri,label in parts.items %}
-		{% if forloop.first %}
+	{% for uri,label in parts.iteritems() %}
+		{% if loop.first %}
 			<tr><th>Parts</th>
 		{% else %}
 			<tr><td></td>
@@ -26,8 +26,8 @@
 {% endif %}
 
 {% if partOf|length > 0 %}
-	{% for uri,label in partOf.items %}
-		{% if forloop.first %}
+	{% for uri,label in partOf.iteritems() %}
+		{% if loop.first %}
 			<tr><th>Part of</th>
 		{% else %}
 			<tr><td></td>
@@ -40,7 +40,6 @@
 </table>
 
 
-{% endwith %}
 
 
 

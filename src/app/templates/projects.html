@@ -6,9 +6,8 @@
 
 
 <div class="row">
-{% for p in projects %}
-	<div class="span6"><div class="well"><h5><a href="/group/{{p.uri|urlencode }}">{{ p.label }}</a> <small>{{ p.project }}</small></h5></div></div>
-	{% cycle '' '</div><div class="row">' %}
+{% for uri, project in projects.iteritems() %}
+	<div class="span6"><div class="well"><h5><a href="/group/{{uri|urlencode }}">{{ project.label }}</a></h5></div></div>
 {% endfor %}
 </div>
 

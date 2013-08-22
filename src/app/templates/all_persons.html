@@ -8,8 +8,9 @@
 <div class='row'>
 {% for p in persons %}
 	<div class="span3"><div class="well"><h5><a href="/person/{{p.uri|urlencode }}">{{ p.label }}</a></h5></div></div>
-	{% cycle '' '' '' '</div><div class="row">' %}
+	<!--% cycle '' '' '' '</div><div class="row">' %-->
 {% endfor %}
+</div>
 
 
 

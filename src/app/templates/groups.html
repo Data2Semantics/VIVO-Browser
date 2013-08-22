@@ -6,9 +6,9 @@
 
 
 <div class="row">
-{% for g in groups %}
-	<div class="span6"><div class="well"><h5><a href="/group/{{g.uri|urlencode }}">{{ g.label }}</a></h5></div></div>
-	{% cycle '' '</div><div class="row">' %}
+{% for uri, group in groups.iteritems() %}
+	<div class="span6"><div class="well"><h5><a href="/group/{{uri|urlencode }}">{{ group.label }}</a></h5></div></div>
+	<!--{{ loop.cycle('','</div><div class="row">') }}-->
 {% endfor %}
 </div>
 

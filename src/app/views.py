@@ -1,49 +1,43 @@
-"""
-Module: views
-Author:  hoekstra
-Created: Jan 29, 2013
-
-
-"""
-
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response, render
-from django.template import RequestContext
+from flask import render_template, g, request, jsonify
 from urllib2 import unquote
-
-from plugins.projects import Projects
-
-
+from util.projects import Projects
+from app import app
 
 
+#p = Projects('http://localhost:8080/openrdf-sesame/repositories/commit')
+p = Projects('http://localhost:8080/openrdf-sesame/repositories/narcisvivo',image_url_mask = 'vu.nl')
+#p = Projects('http://lod.cedar-project.nl:8888/openrdf-sesame/repositories/vua')
 
-p = Projects('http://localhost:8080/openrdf-sesame/repositories/commit')
+@app.route('/')
+def index():
+    # return projects(request)
+    return groups()
 
-
-
-def index(request):
-    return projects(request)
-    
-def projects(request):
+@app.route('/projects')    
+def projects():
     projects = p.listProjects()
-    return render_to_response('projects.html',{'projects': projects})
+    return render_template('projects.html',projects = projects)
 
-def groups(request):
+@app.route('/groups') 
+def groups():
     groups = p.listGroups()
-    return render_to_response('groups.html',{'groups': groups})
+    return render_template('groups.html',groups=groups)
 
-def persons(request):
+@app.route('/persons') 
+def persons():
     persons = p.listAllPersons()
-    return render_to_response('all_persons.html',{'persons': persons})
+    return render_template('all_persons.html',persons = persons)
 
-def person(request, URI):
+@app.route('/person/<path:URI>') 
+def person(URI):
     URI = unquote(URI)
-    person = p.personDetails(URI)
-    return render_to_response('person.html',{'person': person})
+    details = p.personDetails(URI)
+    return render_template('person.html',details = details)
 
-def group(request, URI):
+@app.route('/group/<path:URI>') 
+def group(URI):
     URI = unquote(URI)
     group, parts, partOf = p.groupDetails(URI)
     persons = p.listPersons(URI)
-    return render_to_response('group.html',{'group': group, 'parts': parts, 'partOf': partOf, 'persons': persons})
+    return render_template('group.html', group = group, parts = parts, partOf = partOf, persons = persons)
     
